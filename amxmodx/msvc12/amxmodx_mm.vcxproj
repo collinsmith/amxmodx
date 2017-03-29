@@ -281,6 +281,7 @@
     </ClCompile>
     <ClCompile Include="..\gameconfigs.cpp" />
     <ClCompile Include="..\libraries.cpp" />
+    <ClCompile Include="..\logger.cpp" />
     <ClCompile Include="..\messages.cpp" />
     <ClCompile Include="..\meta_api.cpp" />
     <ClCompile Include="..\modules.cpp" />
@@ -368,6 +369,7 @@
     <ClInclude Include="..\format.h" />
     <ClInclude Include="..\gameconfigs.h" />
     <ClInclude Include="..\libraries.h" />
+    <ClInclude Include="..\logger.h" />
     <ClInclude Include="..\messages.h" />
     <ClInclude Include="..\modules.h" />
     <ClInclude Include="..\natives.h" />
@@ -392,6 +394,9 @@
     <None Include="..\..\plugins\include\cvars.inc" />
     <None Include="..\..\plugins\include\datapack.inc" />
     <None Include="..\..\plugins\include\gameconfig.inc" />
+    <None Include="..\..\plugins\include\logger.inc" />
+    <None Include="..\..\plugins\include\logger_const.inc" />
+    <None Include="..\..\plugins\include\logger_stocks.inc" />
     <None Include="..\..\plugins\include\textparse_ini.inc" />
     <None Include="..\..\plugins\include\textparse_smc.inc" />
     <None Include="..\amxdefn.asm" />
