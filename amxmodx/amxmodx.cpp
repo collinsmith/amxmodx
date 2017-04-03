@@ -4659,6 +4659,62 @@ static cell AMX_NATIVE_CALL is_rukia_a_hag(AMX *amx, cell *params)
 	return 1;
 };
 
+// native UnitTest(const function[] = "test", pluginId = -1);
+static cell AMX_NATIVE_CALL UnitTest(AMX* amx, cell* params)
+{
+	CPluginMngr::CPlugin *plugin;
+	if (params[2] < 0)
+	{
+		plugin = g_plugins.findPluginFast(amx);
+	}
+	else
+	{
+		plugin = g_plugins.findPlugin(params[2]);
+	}
+
+	if (!plugin)
+	{
+		return -1;
+	}
+
+	if (g_CallFunc_Plugin)
+	{
+		// scripter's fault
+		LogError(amx, AMX_ERR_NATIVE, "UnitTest cannot be called during callfunc");
+		return 0;
+	}
+
+	int count, result;
+	char pname[sNAMEMAX + 1];
+
+	int len = 0;
+	char *prefix = get_amxstring(amx, params[1], 0, len);
+	if (prefix[0] == '\0')
+	{
+		LogError(amx, AMX_ERR_NATIVE, "Test function prefix cannot be empty");
+		return 0;
+	}
+
+	AMX *pAmx = plugin->getAMX();
+	amx_NumPublics(pAmx, &count);
+	for (int i = 0; i < count; i++)
+	{
+		amx_GetPublic(pAmx, i, pname);
+		result = strncasecmp(pname, prefix, len);
+		if (result == 0)
+		{
+			cell functionId = i;
+			cell pluginId = plugin->getId();
+			cell *params = new cell[3]{ PAWN_CELL_SIZE / 8, functionId, pluginId };
+			callfunc_begin_i(amx, params);
+			params = new cell[1]{ 0 };
+			callfunc_end(amx, params);
+		}
+	}
+
+	return 1;
+};
+
 AMX_NATIVE_INFO amxmodx_Natives[] =
 {
 	{"abort",					amx_abort},
@@ -4854,5 +4910,6 @@ AMX_NATIVE_INFO amxmodx_Natives[] =
 	{"AutoExecConfig",			AutoExecConfig},
 	{"RequestFrame",			RequestFrame},
 	{"is_rukia_a_hag",			is_rukia_a_hag},
+	{"UnitTest",				UnitTest},
 	{NULL,						NULL}
 };
